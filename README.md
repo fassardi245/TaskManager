@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task Manager – Plataforma de Gestión de Flujos de Trabajo
 
-## Getting Started
+Una aplicación web full-stack interactiva orientada a la productividad personal, diseñada para centralizar la administración de tareas diarias mediante un panel de control dinámico, fluido y responsivo.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Características Clave
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Autenticación Segura:** Flujo de registro e inicio de sesión protegido e integrado a nivel de rutas.
+* **Operaciones CRUD Completas:** Arquitectura preparada para la creación, lectura y eliminación de tareas en tiempo real.
+* **Filtrado Dinámico:** Organización instantánea de tareas según su estado (Completadas, Incompletas) o su nivel de prioridad (Importantes).
+* **Persistencia Robusta:** Modelado de datos eficiente con sincronización directa a una base de datos distribuida.
+* **Interfaz de Usuario Avanzada:** Diseño moderno en modo oscuro enfocado en la experiencia de usuario (UX), con transiciones fluidas y alertas interactivas.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tecnologías Utilizadas
 
-## Learn More
+### Frontend
+* **React & Next.js:** Arquitectura basada en componentes y aprovechamiento del renderizado híbrido (*Client-side Rendering* / *Server-side Rendering*).
+* **TypeScript:** Tipado estático y robusto para la prevención de errores en tiempo de compilación.
+* **Tailwind CSS:** Estilizado ágil y responsivo mediante clases de utilidad utilitarias de última generación.
+* **Styled Components:** Componentes estilizados dinámicamente mediante la inyección de props basadas en contextos globales y un sistema de temas centralizado.
 
-To learn more about Next.js, take a look at the following resources:
+### Backend & Persistencia
+* **Node.js:** Entorno de ejecución asíncrono para la lógica del servidor.
+* **Next.js API Routes:** Rutas de API internas para la manipulación y despacho de recursos de manera desacoplada.
+* **Prisma ORM:** Capa de abstracción y mapeo relacional de objetos para interactuar con la base de datos de manera tipeada y segura.
+* **MongoDB:** Base de datos NoSQL documental utilizada para el almacenamiento flexible y eficiente de los registros de tareas.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Herramientas y Servicios Externos
+* **Clerk:** Gestión integral de autenticación, sesiones y seguridad de usuarios en el cliente y servidor.
+* **Axios:** Cliente HTTP basado en promesas para la ejecución limpia de peticiones asíncronas hacia la API.
+* **React Hot Toast:** Sistema reactivo de notificaciones dinámicas para proveer feedback inmediato al usuario tras cada operación.
