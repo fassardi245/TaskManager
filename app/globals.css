@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: #181818;
+  color: white;
+  font-size: 17px;
+  height: 100vh;
+}
+
+input, textarea, button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
