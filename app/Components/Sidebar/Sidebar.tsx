@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "../Button/Button";
-import { logout } from "@/app/utils/Icons";
+import { arrowLeft, bars, logout } from "@/app/utils/Icons";
 import { useClerk, UserButton, useUser } from "@clerk/nextjs";
 
 export default function SideBar() {
@@ -15,12 +15,15 @@ export default function SideBar() {
         router.push(link);
     };
     const Menu = menu;
-    const {theme} = useGlobalState();
+    const {theme, collapsed, collapsedMenu} = useGlobalState();
     const {signOut} = useClerk();
     const {user} = useUser();
     const {firstName, lastName, imageUrl} = user || {firstName: "", lastName: "", imageUrl: undefined};
     return (
-        <SidebarStyled theme={theme}>
+        <SidebarStyled theme={theme} $collapsed={collapsed}>
+            <button className="toggle-nav" onClick={collapsedMenu}>
+                {collapsed ? bars : arrowLeft}
+            </button>
             <div className="profile group">
                 <div className="profile-overlay opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></div>
                 <div className="relative z-10 inline-block overflow-hidden rounded-full w-[70px] h-[70px] flex-shrink-0 transition-all duration-500 ease-in-out">
@@ -88,7 +91,7 @@ export default function SideBar() {
     );
 }
 
-const SidebarStyled = styled.nav`
+const SidebarStyled = styled.nav<{$collapsed: boolean}>`
     position: relative;
     width: ${(props : any) => props.theme.sidebarWidth};
     background-color: ${(props : any) => props.theme.colorBg2};
@@ -98,7 +101,34 @@ const SidebarStyled = styled.nav`
     flex-direction: column;
     justify-content: space-between;
     color : ${(props : any) => props.theme.colorGrey3};
-    
+
+    @media screen and (max-width: 768px) {
+        position: fixed;
+        height: calc(100% - 2rem);
+        z-index: 100;
+
+        transition: all 0.3s cubic-bezier(0.53,0.21,0,1);
+        transform: ${(props : any) => props.$collapsed ? "translateX(-107%)" : "translateX(0)"};
+        
+        .toggle-nav{
+            display: block !important;
+        }
+    }
+
+    .toggle-nav{
+        display: none;
+        position: absolute;
+        right: -45px;
+        top: 1.5rem;
+        padding: 0.8rem 0.9rem;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        background-color: ${(props : any) => props.theme.colorBg2};
+        border-right: 2px solid ${(props : any) => props.theme.borderColor2};
+        border-top: 2px solid ${(props : any) => props.theme.borderColor2};
+        border-bottom: 2px solid ${(props : any) => props.theme.borderColor2};
+    }
+
     .profile{
         margin: 1.5rem; 
         padding: 1rem 0.8rem; 
@@ -182,9 +212,5 @@ const SidebarStyled = styled.nav`
         }
             .active::before {
                 width: 0.3rem;
-            }
-
-            > button {
-                margin: 1,5rem;
             }
 `;

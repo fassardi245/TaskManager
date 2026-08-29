@@ -4,7 +4,7 @@ import React from "react";
 
 export default function signup() {
   return (
-    <div>
+    <div className="flex items-center justify-center h-full">
       <SignUp path="/signup" />
     </div>
   );
