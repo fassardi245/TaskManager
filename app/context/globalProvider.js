@@ -14,13 +14,16 @@ export const GlobalProvider = ({ children }) => {
     const theme = themes[selectedTheme];
     const [tasks, setTasks] = useState([]);
     const [modal, setModal] = useState(false);
+    const [editingTask, setEditingTask] = useState(null);
     const [collapsed, setColapsed] = useState(false);
 
-    const openModal = () => {
+    const openModal = (task = null) => {
+        setEditingTask(task);
         setModal(true);
     };
 
     const closeModal = () => {
+        setEditingTask(null);
         setModal(false);
     }
 
@@ -48,10 +51,12 @@ export const GlobalProvider = ({ children }) => {
         try {
             const res = await axios.put('/api/tasks', task);
             toast.success("Tarea actualizada");
-            allTasks();
+            await allTasks();
+            return true;
         } catch (error) {
             console.log(error);
             toast.error("Algo salio mal");
+            return false;
         }
     }
 
@@ -79,7 +84,7 @@ export const GlobalProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <GlobalContext.Provider value={{theme, tasks, deleteTask, isLoading, completedTask, importantTask, incompleteTask, updateTask, modal, openModal, closeModal, allTasks, collapsed, collapsedMenu}}>
+        <GlobalContext.Provider value={{theme, tasks, deleteTask, isLoading, completedTask, importantTask, incompleteTask, updateTask, modal, editingTask, openModal, closeModal, allTasks, collapsed, collapsedMenu}}>
             <GlobalUpdateContext.Provider value={{}}>
                 {children}
             </GlobalUpdateContext.Provider>

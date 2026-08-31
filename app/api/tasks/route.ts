@@ -53,14 +53,53 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-      const {userId} = await auth();
-      const {isCompleted, id} = await request.json();
+      const { userId } = await auth();
       if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }    
+      }
+
+      const { id, title, description, date, isCompleted, isImportant } = await request.json();
+      if (!id || typeof id !== 'string') {
+        return NextResponse.json({ error: 'Task id is required' }, { status: 400 });
+      }
+
+      const isFullUpdate = title !== undefined || description !== undefined || date !== undefined;
+      if (isFullUpdate) {
+        if (typeof title !== 'string' || title.trim().length < 3 || typeof description !== 'string' || !description.trim() || typeof date !== 'string' || !date) {
+          return NextResponse.json({ error: 'Title, description, and date are required' }, { status: 400 });
+        }
+      }
+
+      if (isCompleted !== undefined && typeof isCompleted !== 'boolean') {
+        return NextResponse.json({ error: 'isCompleted must be a boolean' }, { status: 400 });
+      }
+
+      if (isImportant !== undefined && typeof isImportant !== 'boolean') {
+        return NextResponse.json({ error: 'isImportant must be a boolean' }, { status: 400 });
+      }
+
+      const existingTask = await prisma.task.findFirst({ where: { id, userId } });
+      if (!existingTask) {
+        return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+      }
+
+      const data: {
+        title?: string;
+        description?: string;
+        date?: string;
+        isCompleted?: boolean;
+        isImportant?: boolean;
+      } = {};
+
+      if (title !== undefined) data.title = title.trim();
+      if (description !== undefined) data.description = description.trim();
+      if (date !== undefined) data.date = date;
+      if (isCompleted !== undefined) data.isCompleted = isCompleted;
+      if (isImportant !== undefined) data.isImportant = isImportant;
+
       const task = await prisma.task.update({
         where: { id },
-        data: { isCompleted },
+        data,
       });
       return NextResponse.json(task);
   } catch (error) {

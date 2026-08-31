@@ -5,15 +5,16 @@ import React, {useState} from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { plus } from "@/app/utils/Icons";
+import { edit, plus } from "@/app/utils/Icons";
 
 export default function CreateContent() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [completed, setCompleted] = useState(false);
-  const [important, setImportant] = useState(false);
-  const {theme, allTasks, closeModal} = useGlobalState();
+  const {theme, allTasks, closeModal, editingTask, updateTask} = useGlobalState();
+  const [title, setTitle] = useState(editingTask?.title ?? "");
+  const [description, setDescription] = useState(editingTask?.description ?? "");
+  const [date, setDate] = useState(editingTask?.date ?? "");
+  const [completed, setCompleted] = useState(editingTask?.isCompleted ?? false);
+  const [important, setImportant] = useState(editingTask?.isImportant ?? false);
+  const isEditing = Boolean(editingTask);
 
   const handleChange = (name : string) => (e: any) => {
     switch (name) {
@@ -43,12 +44,25 @@ export default function CreateContent() {
         title,
         description,
         date,
-        completed,
-        important,
+        isCompleted: completed,
+        isImportant: important,
     };
     try 
     {
-        const response = await axios.post("/api/tasks", taskData);
+        if (isEditing) {
+          const updated = await updateTask({ id: editingTask.id, ...taskData });
+          if (updated) {
+            closeModal();
+          }
+          return;
+        }
+
+        const createTaskData = {
+          ...taskData,
+          completed,
+          important,
+        };
+        const response = await axios.post("/api/tasks", createTaskData);
         if (response.data.error){
             toast.error(response.data.error);
         }
@@ -66,7 +80,7 @@ export default function CreateContent() {
   return (
     <InputStyles onSubmit={handleSubmit} theme={theme}>
     <div>
-      <h1 className="text-2xl font-semibold">Crea una tarea</h1>
+      <h1 className="text-2xl font-semibold">{isEditing ? "Edita la tarea" : "Crea una tarea"}</h1>
       <div className="input-control relative m-2 font-medium">
         <label className="mb-2 inline-block font-medium" htmlFor="title">Título</label>
         <input
@@ -105,7 +119,7 @@ export default function CreateContent() {
         <input
             type="checkbox"
             id="completed"
-            value={completed.toString()}
+            checked={completed}
             name="completed"
             onChange={handleChange("completed")}
             className="w-initial"
@@ -116,15 +130,15 @@ export default function CreateContent() {
         <input
             type="checkbox"
             id="important"
-            value={important.toString()}
+            checked={important}
             name="important"
             onChange={handleChange("important")}
         />
       </div>
       <div className="submit-btn flex justify-end">
         <Button type="submit"
-         name="Crear Tarea"
-         icon={plus}
+         name={isEditing ? "Actualizar tarea" : "Crear Tarea"}
+          icon={isEditing ? edit : plus}
          padding={"0.8rem 2rem"}
          borderRad={"0.8rem"}
          fw={"500"}

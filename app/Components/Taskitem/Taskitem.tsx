@@ -10,11 +10,12 @@ interface Props {
     description: string;
     date: string;
     isCompleted: boolean;
+    isImportant: boolean;
     id: string;
 }
 
-export default function Taskitem({title, description, date, isCompleted, id}: Props) {
-    const {theme, deleteTask, updateTask} = useGlobalState();
+export default function Taskitem({title, description, date, isCompleted, isImportant, id}: Props) {
+    const {theme, deleteTask, updateTask, openModal} = useGlobalState();
   return (
     <TaskStyled theme={theme}>
         <h1 className="font-semibold text-2xl">{title}</h1>
@@ -32,8 +33,8 @@ export default function Taskitem({title, description, date, isCompleted, id}: Pr
                 updateTask(task);
             }}>incompleta</button>
         )}
-        {/* <button className="edit border-none outline-none cursor-pointer ml-auto text-xl">{edit}</button> */}
-            <button className="delete border-none outline-none cursor-pointer text-xl ml-auto" onClick={() => deleteTask(id)}>{trash}</button>
+            <button className="edit border-none outline-none cursor-pointer ml-auto text-xl" onClick={() => openModal({ id, title, description, date, isCompleted, isImportant })}>{edit}</button>
+            <button className="delete border-none outline-none cursor-pointer text-xl" onClick={() => deleteTask(id)}>{trash}</button>
         </div>
     </TaskStyled>            
     );
