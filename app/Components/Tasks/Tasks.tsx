@@ -29,7 +29,7 @@ export default function Tasks({title, tasks}: Props) {
                     id={task.id} 
                     />
                 ))}
-                <button className="create-task flex items-center justify-center gap-2 h-64 font-bold cursor-pointer rounded-2xl" onClick={openModal}>
+                <button className="create-task flex items-center justify-center gap-2 h-64 font-bold cursor-pointer rounded-2xl" onClick={() => openModal()}>
                     {plus}
                     Agregar nueva tarea
                 </button>
